@@ -1,5 +1,6 @@
 package numbers;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -46,14 +47,30 @@ class NumbersImpl implements Numbers {
 
     @Override
     public long sum_positive_even_numbers(int[] numbers) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sum_positive_even_numbers'");
+
+        if(numbers == null) {
+            throw new IllegalArgumentException(String.format("illegal argument: %s", "null"));
+        }
+        List<Integer> positiveEvenNumbers = new ArrayList<>(); ; 
+        for(int x = 0; x<numbers.length; x++) {
+            if( numbers[x]%2 == 0 && numbers[x]>0 ){
+              positiveEvenNumbers.add(numbers[x]);
+            }
+        }
+        return positiveEvenNumbers.stream()
+                           .mapToLong(i -> i) // Konvertiere Integer zu long
+                           .sum();
+
+                //long sum = Arrays.stream(numbers) // Startet einen IntStream
+                //.filter(n -> n > 0 && n % 2 == 0) // Filtern der Elemente
+                //.mapToLong(n -> n) // Wichtig für die große Summe: Konvertiere zu LongStream
+                //.sum(); // Berechne die Summe
+
     }
 
     @Override
     public long sum_recursive(int[] numbers, int i) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'sum_recursive'");
+        
     }
 
     @Override
