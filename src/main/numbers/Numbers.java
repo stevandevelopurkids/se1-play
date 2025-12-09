@@ -19,6 +19,7 @@ public interface Numbers {
      * @return sum of numbers[]
      */
     long sum(int[] numbers);
+   
 
     /**
      * Aufgabe 2.) Calculate sum of positive even numbers[].
@@ -98,8 +99,7 @@ public interface Numbers {
      * @return instance of the {@link Numbers} interface
      */
     static Numbers getInstance() {
-        throw new UnsupportedOperationException("Unimplemented method 'getInstance()' "
-            + "in interface 'Numbers'. Create an implementation class and return.");
+        return NumbersImpl.getInstance();
     }
 
     /**
