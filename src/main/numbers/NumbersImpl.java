@@ -70,7 +70,20 @@ class NumbersImpl implements Numbers {
 
     @Override
     public long sum_recursive(int[] numbers, int i) {
-        
+
+         // Optional: Fehlerbehandlung für null-Argumente
+    if (numbers == null) {
+        throw new IllegalArgumentException(String.format("illegal argument: %s", "null"));
+    }
+        // 1. Basisfall (Abbruchmechanismus): Wir sind außerhalb des Arrays
+    if (i >= numbers.length) {
+        // Nichts mehr zu addieren
+        return 0; 
+    }
+    
+    // 2. Rekursiver Fall:
+    // Aktuellen Wert nehmen (numbers[i]) und das Ergebnis des nächsten rekursiven Aufrufs addieren
+    return numbers[i] + sum_recursive(numbers, i + 1);
     }
 
     @Override
