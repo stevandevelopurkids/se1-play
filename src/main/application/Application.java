@@ -1,6 +1,6 @@
 package application;
 
-import java.util.Arrays;
+import streams.Streams;
 
 /**
  * Application class with a {@code main()} - function that parses command line
@@ -20,8 +20,12 @@ public class Application {
         var greeting = String.format(module==null? "%s, se1-play" : "%s, %s (modular)", "Hello", module);
         System.out.println(greeting);
 
-        Arrays.stream(args)
-            .map(arg -> String.format(" - arg: %s", arg))
-            .forEach(System.out::println);
+        // java.util.Arrays.stream(args)
+        //     .map(arg -> String.format(" - arg: %s", arg))
+        //     .forEach(System.out::println);
+        // 
+        Streams streams = Streams.getInstance();
+        Runner runner = Streams.createRunner(streams);
+        runner.run(args);
     }
 }
