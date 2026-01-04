@@ -164,8 +164,7 @@ class NumbersImpl implements Numbers {
 
     @Override
     public Set<Pair> findSums(int[] numbers, int sum) {
-
-        if (numbers == null) {
+/*        if (numbers == null) {
         throw new IllegalArgumentException(String.format("illegal argument: %s", "null"));
     }
 
@@ -201,7 +200,46 @@ class NumbersImpl implements Numbers {
            }
       }
       return filteredPairSet;
-    */}
+    */
+   
+   
+   if (numbers == null) {
+        throw new IllegalArgumentException(String.format("illegal argument: %s", "null"));
+    }
+    
+    // Initialisierung des Sets ist korrekt
+    Set<Numbers.Pair> pairSet = new HashSet<>(); 
+
+    // Äußere Schleife (i): Wählt die erste Zahl
+    for (int i = 0; i < numbers.length; i++) {
+        
+        // Innere Schleife (j): Wählt die zweite Zahl (beginnt bei i + 1, um Selbstpaare und Duplikate zu vermeiden)
+        for (int j = i + 1; j < numbers.length; j++) { 
+            
+            int val1 = numbers[i];
+            int val2 = numbers[j];
+
+            // 1. Prüfe die Summenbedingung
+            if (val1 + val2 == sum) {
+                
+                // 2. WICHTIG: Standardisiere das Paar, um Spiegelkopien (Mirror Duplicates) zu eliminieren
+                // Die kleinere Zahl muss immer an erster Stelle im Pair-Record stehen.
+                int a = Math.min(val1, val2);
+                int b = Math.max(val1, val2);
+                
+                // 3. Füge das standardisierte Paar hinzu
+                // Wenn das Set bereits (5, 7) enthält, wird (5, 7) ignoriert.
+                Numbers.Pair pair = new Numbers.Pair(a, b);
+                pairSet.add(pair);
+            }
+        }
+    }
+    // Der gefilterte Set-Teil unten ist nicht notwendig und sollte entfernt werden.
+    return pairSet;
+   
+   
+   
+    }
 
     @Override
     public Set<Set<Integer>> findAllSums(int[] numbers, int sum) {
