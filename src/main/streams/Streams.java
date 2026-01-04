@@ -3,6 +3,7 @@ package streams;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import application.Runner;
 
@@ -14,11 +15,23 @@ import application.Runner;
  */
 public interface Streams {
 
+    Stream<Integer> boxedStream = IntStream.rangeClosed(1, 1000).boxed();
     /**
      * Aufgabe 1: Return 10 random integer numbers in the range [0..999].
      * @return a {@code Stream<Integer>} from which 10 random numbers can be drawn
      */
     Stream<Integer> tenRandomNumbers();
+
+/*
+public Stream<Integer> tenRandomNumbers() {
+    return new Random()
+            .ints(10, 0, 1000) // Erzeugt 10 Zufallszahlen zwischen 0 (inklusiv) und 1000 (exklusiv)
+            .boxed();          // Wandelt IntStream in Stream<Integer> um
+}
+ */
+
+    
+    
 
     /**
      * Aufgabe 2: Return 10 even random integer numbers in the range [0..999].
@@ -154,8 +167,7 @@ public interface Streams {
      * @return instance of the {@link Streams} interface
      */
     static Streams getInstance() {
-        throw new UnsupportedOperationException("Unimplemented method 'getInstance()' "
-            + "in interface 'Streams'. Create an implementation class and return.");
+        return new StreamsImpl(); // Erstellt und liefert deine neue Klasse zurück
     }
 
     /**
