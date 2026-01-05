@@ -54,7 +54,9 @@ public Stream<Integer> tenRandomNumbers() {
     static Map<String, Function<Integer, Boolean>> filterFunctions = Map.of(
         "even", n -> n % 2 == 0,    // filter even numbers
         "div3", n -> n % 3 == 0,    // filter numbers divisible by three
-        "prime3", n -> true         // add: filter for three-digit prime numbers
+        "prime3", n -> n >= 100 && n <=999 && 
+            n > 1 && java.util.stream.IntStream.rangeClosed(2, (int) Math.sqrt(n))
+               .noneMatch(i -> n % i == 0) // Bedingung 2: Primzahl-Logik
     );
 
     /**
@@ -152,6 +154,8 @@ public Stream<Integer> tenRandomNumbers() {
      * @return total value of orders
      */
     long calculateOrderValue(List<Order> orders);
+
+    
 
     /**
      * Aufgabe 9: Return a list of orders sorted by order value (highest-value first).
