@@ -90,7 +90,7 @@ public interface Numbers {
      * @param sum to match
      * @return all combinations of numbers that add to sum
      */
-    Set<Set<Integer>> findAllSums(int[] numbers, int sum);
+    Set<Set<Integer>> findAllSums(int[]numbers, int sum);
 
 
     /**

@@ -241,79 +241,60 @@ class NumbersImpl implements Numbers {
    
     }
 
+  
+
+
     @Override
-    public Set<Set<Integer>> findAllSums(int[] numbers, int sum) {
-        if (numbers == null) {
-        throw new IllegalArgumentException(String.format("illegal argument: %s", "null"));
+public Set<Set<Integer>> findAllSums(int[]numbers, int sum) {
+    // DEBUG: Was kommt hier eigentlich an?
+    System.out.println("DEBUG: Suche gestartet mit sum=" + sum + " und Array-Länge=" + (numbers != null ? numbers.length : "null"));
+    if (numbers == null) {
+        throw new IllegalArgumentException("illegal argument: null");
     }
 
- // Das Set für alle gefundenen Lösungen (Endergebnis)
+    // Das Endergebnis bleibt ein Set von Sets, um Duplikate in den Lösungen zu vermeiden
     Set<Set<Integer>> allSolutions = new HashSet<>();
     
-    // Das Set für die aktuelle Kombination, die wir gerade aufbauen
-    Set<Integer> currentSubset = new HashSet<>();
+    // WICHTIG: Nutze eine LISTE für den aktuellen Pfad (currentSubset)
+    // Ein Set erlaubt keine doppelten Zahlen (z.B. 15 + 15 = 30 ginge nicht)
+    List<Integer> currentSubset = new ArrayList<>();
 
-    // Starte die rekursive Suche bei Index 0
     findAllSumsRecursive(numbers, sum, 0, currentSubset, allSolutions);
-
+    // DEBUG: Wie viele Lösungen wurden gefunden?
+System.out.println("DEBUG: Suche beendet. Gefundene Lösungen: " + allSolutions.size());
     return allSolutions;
 }
 
-    private void findAllSumsRecursive(int[] numbers, 
+private void findAllSumsRecursive(int[] numbers, 
                                   int targetSum, 
                                   int index, 
-                                  Set<Integer> currentSubset, 
+                                  List<Integer> currentSubset, // Hier jetzt List statt Set
                                   Set<Set<Integer>> allSolutions) {
     
-    // ----------------------------------------------------
-    // 1. BASISTÄLLE (Abbruchbedingungen)
-    // ----------------------------------------------------
-    
-    // A. Erfolgsfall: Summe wurde exakt erreicht.
+    // 1. Erfolg: Summe exakt erreicht
     if (targetSum == 0) {
-        // Füge eine KOPIE der aktuellen Lösung zum Endergebnis hinzu!
-        // (Wichtig: Wir speichern ein neues HashSet, da sich currentSubset noch ändert)
+        // Wir kopieren die Liste in ein Set, damit {7, 23} und {23, 7} als gleich gelten
         allSolutions.add(new HashSet<>(currentSubset));
         return;
     }
 
-    // B. Misserfolgsfall: Entweder Summe ist unterschritten oder Array ist durchsucht.
+    // 2. Abbruch: Ende des Arrays oder Summe bereits überschritten
     if (index >= numbers.length || targetSum < 0) {
         return;
     }
     
-    // ----------------------------------------------------
-    // 2. REKURSIVER SCHRITT: ELEMENTE NEHMEN ODER ÜBERSPRINGEN
-    // ----------------------------------------------------
-    
     int currentNumber = numbers[index];
     
-    // ----------------------------------------------------
-    // Entscheidungsbaum-Pfad 1: ELEMENT NEHMEN ("Take")
-    // ----------------------------------------------------
-    
-    // Füge die aktuelle Zahl zur Kombination hinzu
+    // --- Pfad 1: ELEMENT NEHMEN ---
     currentSubset.add(currentNumber);
-    
-    // Rekursiver Aufruf: Gehe zum nächsten Index (index + 1) und reduziere die Summe
+    // Wir ziehen die Zahl von der Zielsumme ab
     findAllSumsRecursive(numbers, targetSum - currentNumber, index + 1, currentSubset, allSolutions);
     
-    // ----------------------------------------------------
-    // Entscheidungsbaum-Pfad 2: BACKTRACKING (Aufräumen)
-    // ----------------------------------------------------
+    // --- Pfad 2: BACKTRACKING (Aufräumen) ---
+    // Wir entfernen das LETZTE hinzugefügte Element über den Index
+    currentSubset.remove(currentSubset.size() - 1);
     
-    // Mache die Änderung von Pfad 1 rückgängig (Backtracking),
-    // damit der nächste Pfad (Pfad 3: NICHT NEHMEN) mit einem sauberen Subset arbeiten kann.
-    currentSubset.remove(currentNumber);
-    
-    // ----------------------------------------------------
-    // Entscheidungsbaum-Pfad 3: ELEMENT NICHT NEHMEN ("Skip")
-    // ----------------------------------------------------
-    
-    // Rekursiver Aufruf: Gehe zum nächsten Index (index + 1), Summe bleibt gleich.
-    // Das Element wurde bereits oben aus currentSubset entfernt.
+    // --- Pfad 3: ELEMENT NICHT NEHMEN ---
     findAllSumsRecursive(numbers, targetSum, index + 1, currentSubset, allSolutions);
-
-
 }
 }
