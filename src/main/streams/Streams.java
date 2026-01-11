@@ -3,6 +3,7 @@ package streams;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import java.util.stream.IntStream;
 
 import application.Runner;
 
@@ -14,11 +15,23 @@ import application.Runner;
  */
 public interface Streams {
 
+    Stream<Integer> boxedStream = IntStream.rangeClosed(1, 1000).boxed();
     /**
      * Aufgabe 1: Return 10 random integer numbers in the range [0..999].
      * @return a {@code Stream<Integer>} from which 10 random numbers can be drawn
      */
     Stream<Integer> tenRandomNumbers();
+
+/*
+public Stream<Integer> tenRandomNumbers() {
+    return new Random()
+            .ints(10, 0, 1000) // Erzeugt 10 Zufallszahlen zwischen 0 (inklusiv) und 1000 (exklusiv)
+            .boxed();          // Wandelt IntStream in Stream<Integer> um
+}
+ */
+
+    
+    
 
     /**
      * Aufgabe 2: Return 10 even random integer numbers in the range [0..999].
@@ -41,7 +54,10 @@ public interface Streams {
     static Map<String, Function<Integer, Boolean>> filterFunctions = Map.of(
         "even", n -> n % 2 == 0,    // filter even numbers
         "div3", n -> n % 3 == 0,    // filter numbers divisible by three
-        "prime3", n -> true         // add: filter for three-digit prime numbers
+                 // add: filter for three-digit prime numbers
+        "prime3", n -> n >= 100 && n <=999 && 
+            n > 1 && java.util.stream.IntStream.rangeClosed(2, (int) Math.sqrt(n))
+               .noneMatch(i -> n % i == 0) // Bedingung 2: Primzahl-Logik
     );
 
     /**
@@ -140,6 +156,8 @@ public interface Streams {
      */
     long calculateOrderValue(List<Order> orders);
 
+    
+
     /**
      * Aufgabe 9: Return a list of orders sorted by order value (highest-value first).
      * @param orders list of orders to sort
@@ -154,8 +172,8 @@ public interface Streams {
      * @return instance of the {@link Streams} interface
      */
     static Streams getInstance() {
-        throw new UnsupportedOperationException("Unimplemented method 'getInstance()' "
-            + "in interface 'Streams'. Create an implementation class and return.");
+        
+        return new StreamsImpl(); // Erstellt und liefert deine neue Klasse zurück
     }
 
     /**
